@@ -57,11 +57,33 @@ def initialize() {
 def switchMeter(evt) {
     def meterValue = evt.value as double
     //log.debug "the value is ${meterValue}"
-    if (meterValue > 2)
+/*    if (meterValue > 2)
         outlet.on()
         //log.debug "the value on ${meterValue}"
     else
         outlet.off([delay:1000000])
         //log.debug "the value off ${meterValue}"
-
+*/
+    int offTimer = 0
+    while (meterValue < 2) {
+        if (offTimer == 5) {
+                /*this checks to see if enough time has elapsed to turn off lights */
+            //log.debug "Outlet switched OFF"
+            outlet.off()
+            break;
+        } else {
+                //log.debug "timer increased by 1 minute"
+            sleep(60000);
+            offTimer++;
+            continue;
+        }
+    }
+    while (meterValue >= 2) {
+        offTimer = offTimer - offTimer
+            /*this resets the timer back to 0 */
+        //log.debug "timer reset to ${offTimer}"
+        //log.debug "Outlet switched ON"
+        outlet.on();
+        break;
+    }   
 }
